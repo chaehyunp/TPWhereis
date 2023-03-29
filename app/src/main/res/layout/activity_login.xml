@@ -27,7 +27,7 @@
         android:layout_below="@+id/tv_title"
         android:textColor="#ff595959"
         android:background="@drawable/bg_tv_go"
-        android:paddingHorizontal="16dp"
+        android:paddingHorizontal="24dp"
         android:paddingVertical="8dp"/>
 
     <!-- 아래서부터 컴포넌트 쌓아올리기 -->
