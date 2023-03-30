@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "628166537768",
+    "project_id": "whereishue",
+    "storage_bucket": "whereishue.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:628166537768:android:a4aab908b3af03e31a3b1d",
+        "android_client_info": {
+          "package_name": "com.ch96.tpwhereis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "628166537768-4o6qtqhn5eev511r4pqlvir4hmekl1k2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCY0SyxmTHuRXwImkOTCChqSDrzzZhkmD0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "628166537768-4o6qtqhn5eev511r4pqlvir4hmekl1k2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
