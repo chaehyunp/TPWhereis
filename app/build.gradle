@@ -51,4 +51,10 @@ dependencies {
 
     //Firebase product SDK
     implementation('com.google.firebase:firebase-firestore-ktx') //cloud Firestore DB for Kotlin
+
+    //Kakao login library
+    implementation "com.kakao.sdk:v2-user:2.13.0"
+
+    //Google login SDK
+    implementation 'com.google.android.gms:play-services-auth:20.4.1'
 }
