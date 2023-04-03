@@ -12,7 +12,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.ch96.tpwhereis.GlobalVari
 import com.ch96.tpwhereis.R
 import com.ch96.tpwhereis.databinding.ActivityLoginBinding
+import com.ch96.tpwhereis.model.NidUserInfoResponse
 import com.ch96.tpwhereis.model.UserAccount
+import com.ch96.tpwhereis.network.RetrofitApiService
+import com.ch96.tpwhereis.network.RetrofitHelper
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -21,6 +24,12 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk.keyHash
 import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
+import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.oauth.OAuthLoginCallback
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
 
 class LoginActivity : AppCompatActivity() {
 
@@ -130,6 +139,56 @@ class LoginActivity : AppCompatActivity() {
     })
 
     private fun clickLoginNaver() {
+
+        //네아로 초기화
+        NaverIdLoginSDK.initialize(this, "jED5Rib2y7SfcmhebtRP", "PtkMdTVIa_", "웨어리즈")
+
+        //네이버 로그인
+        NaverIdLoginSDK.authenticate(this, object : OAuthLoginCallback{
+            override fun onError(errorCode: Int, message: String) {
+                Toast.makeText(this@LoginActivity, "error : $message", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onFailure(httpStatus: Int, message: String) {
+                Toast.makeText(this@LoginActivity, "fail : $message", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onSuccess() {
+                Toast.makeText(this@LoginActivity, "네이버 로그인 성공", Toast.LENGTH_SHORT).show()
+
+                //사용자 정보를 가져오는 REST API 작업할때 접속토큰이 필요
+                val accessToken:String? = NaverIdLoginSDK.getAccessToken()
+                //토큰값 확인
+                Log.i("token", accessToken!!)
+
+                //레트로핏으로 사용자정보 API 가져오기
+                val retrofit = RetrofitHelper.getRetrofitInstance("https://openapi.naver.com")
+                retrofit.create(RetrofitApiService::class.java).getNaverUserInfo("Bearer $accessToken").enqueue(object  : Callback<NidUserInfoResponse> {
+                    override fun onResponse(
+                        call: Call<NidUserInfoResponse>,
+                        response: Response<NidUserInfoResponse>
+                    ) {
+                        val userInfoResponse:NidUserInfoResponse? = response.body()
+                        val id:String = userInfoResponse?.response?.id?:"" //엘비스 연산자 : 앞이 null값이면 뒤값을 기본으로
+                        val email:String = userInfoResponse?.response?.email?:""
+
+                        Toast.makeText(this@LoginActivity, "$email", Toast.LENGTH_SHORT).show()
+                        GlobalVari.userAccount = UserAccount(id, email)
+
+                        //메인화면으로 이동
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                        finish()
+                    }
+
+                    override fun onFailure(call: Call<NidUserInfoResponse>, t: Throwable) {
+                        Toast.makeText(this@LoginActivity, "회원정보 불러오기 실패 : ${t.message}", Toast.LENGTH_SHORT).show()
+                    }
+
+                })
+
+            }
+
+        })
 
     }
 }
