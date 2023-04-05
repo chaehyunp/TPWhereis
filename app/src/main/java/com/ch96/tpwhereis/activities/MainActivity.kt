@@ -19,6 +19,9 @@ import com.ch96.tpwhereis.R
 import com.ch96.tpwhereis.databinding.ActivityMainBinding
 import com.ch96.tpwhereis.fragments.PlaceListFragment
 import com.ch96.tpwhereis.fragments.PlaceMapFragment
+import com.ch96.tpwhereis.model.KakaoSearchPlaceResponse
+import com.ch96.tpwhereis.network.RetrofitApiService
+import com.ch96.tpwhereis.network.RetrofitHelper
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -27,6 +30,11 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.create
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,7 +49,8 @@ class MainActivity : AppCompatActivity() {
     //[Google Fused Location API 사용 : play-services-location ]
     val providerClient : FusedLocationProviderClient by lazy { LocationServices.getFusedLocationProviderClient(this) }
 
-        
+    //검색결과 응답객체 참조변수
+    var searchPlaceResponse:KakaoSearchPlaceResponse ?= null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -146,7 +155,25 @@ class MainActivity : AppCompatActivity() {
 
     //카카오 장소 검색 API를 파싱하는 작업 메소드
     private fun searchPlace() {
-        Toast.makeText(this, "$searchQuery - ${myLocation?.latitude} - ${myLocation?.longitude}", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(this, "$searchQuery - ${myLocation?.latitude} - ${myLocation?.longitude}", Toast.LENGTH_SHORT).show()
+
+        //Kakao keyword place search api... REST API작업 - Retrofit
+        val retrofit:Retrofit = RetrofitHelper.getRetrofitInstance("https://dapi.kakao.com")
+        val retrofitApiService = retrofit.create(RetrofitApiService::class.java) //searchPlace 함수는 Call 객체로 리턴해줌 객체만들어서 받지말고 바로 인큐
+        retrofitApiService.searchPlace(searchQuery, myLocation?.latitude.toString(), myLocation?.longitude.toString()).enqueue(object : Callback<KakaoSearchPlaceResponse>{
+            override fun onResponse(
+                call: Call<KakaoSearchPlaceResponse>,
+                response: Response<KakaoSearchPlaceResponse>
+            ) {
+                searchPlaceResponse = response.body()
+                Toast.makeText(this@MainActivity, "${searchPlaceResponse?.meta?.total_count}", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onFailure(call: Call<KakaoSearchPlaceResponse>, t: Throwable) {
+                Toast.makeText(this@MainActivity, "서버에 문제가있습니다.", Toast.LENGTH_SHORT).show()
+            }
+
+        })
     }
 
     //특정 키워드 검색 단축 버튼들에 리스너 처리
