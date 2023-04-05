@@ -166,7 +166,14 @@ class MainActivity : AppCompatActivity() {
                 response: Response<KakaoSearchPlaceResponse>
             ) {
                 searchPlaceResponse = response.body()
-                Toast.makeText(this@MainActivity, "${searchPlaceResponse?.meta?.total_count}", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this@MainActivity, "${searchPlaceResponse?.meta?.total_count}", Toast.LENGTH_SHORT).show()
+
+                //무조건 검색이 완료가 되면 ListFragment부터 보여주기
+                //어차피 갱신이 한 두개 추가가 아니기때문에 간편하게 프래그먼트 새로 만들어 붙이기
+                supportFragmentManager.beginTransaction().replace(R.id.container_fragment, PlaceListFragment()).commit()
+
+                //탭버튼의 위치를 ListFragment tab으로 변경
+                binding.tabLayout.getTabAt(0)?.select() //0번째 탭(LIST)을 가져와서 선택
             }
 
             override fun onFailure(call: Call<KakaoSearchPlaceResponse>, t: Throwable) {
