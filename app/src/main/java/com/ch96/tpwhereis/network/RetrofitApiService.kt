@@ -12,7 +12,7 @@ import retrofit2.http.Query
 interface RetrofitApiService {
     //네아로 사용자정보 API
     @GET("/v1/nid/me")
-    fun getNaverUserInfo(@Header("Authorization") authorization:String) : Call<NidUserInfoResponse>
+    fun getNidUserInfo(@Header("Authorization") authorization:String) : Call<NidUserInfoResponse>
 
     //카카오 키워드 장소 검색 API
     //네이버는 헤더 정보가 바뀌기 때문에 함수 안에 넣어줬지만, 카카오는 변하지 않기 때문에 고정적으로 써줌

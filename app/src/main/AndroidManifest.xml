@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <!-- 인터넷 사용 권한 설정 -->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 위치정보제공 퍼미션 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -12,13 +11,19 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/icon"
+        android:label="웨어리즈"
+        android:roundIcon="@mipmap/icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TPWhereis"
-        tools:targetApi="31"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+        <activity
+            android:name=".HelpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.PrivactyActivity"
+            android:exported="false" />
         <activity
             android:name=".activities.PlaceUrlActivity"
             android:exported="false" />
@@ -58,10 +63,10 @@
                     android:host="oauth"
                     android:scheme="kakaobfdded7ceaf1cb8bcfca06fa237df03a" />
             </intent-filter>
-        </activity>
-
-        <!-- Kakao Map App key [Native App key]-->
-        <meta-data android:name="com.kakao.sdk.AppKey" android:value="bfdded7ceaf1cb8bcfca06fa237df03a"/>
+        </activity> <!-- Kakao Map App key [Native App key] -->
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="bfdded7ceaf1cb8bcfca06fa237df03a" />
     </application>
 
 </manifest>

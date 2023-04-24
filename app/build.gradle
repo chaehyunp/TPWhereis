@@ -12,15 +12,16 @@ android {
         applicationId "com.ch96.tpwhereis"
         minSdk 24
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        versionCode 1 //여기도 +1
+        versionName "1.0" //같은 이름으로는 업로드가 되지않음, 버전을 더해줘서 업데이트해주기
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true //난독화
+            shrinkResources true //리소스 압축
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

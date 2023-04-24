@@ -1,6 +1,7 @@
 package com.ch96.tpwhereis.activities
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,7 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import com.ch96.tpwhereis.HelpActivity
 import com.ch96.tpwhereis.R
 import com.ch96.tpwhereis.databinding.ActivityMainBinding
 import com.ch96.tpwhereis.fragments.PlaceListFragment
@@ -105,7 +107,10 @@ class MainActivity : AppCompatActivity() {
             requsetMyLocation()
         }
 
-        binding.ivMylocation.setOnClickListener{ requsetMyLocation() }
+        binding.ivMylocation.setOnClickListener{
+            requsetMyLocation()
+            Toast.makeText(this, "위치를 재검색합니다!", Toast.LENGTH_SHORT).show()
+        }
     }
 
     //퍼미션 요청 대행사 계약 및 등록
@@ -127,11 +132,9 @@ class MainActivity : AppCompatActivity() {
         //퍼미션을 받았는지 확인을 해야함 -> onCreate 안에서 했기 때문에 이 메소드 안에서는 알지 못함
         //ADD PERMISSION CHECK 필요
         if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                this, Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
+                this, Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             return
@@ -242,8 +245,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
-            R.id.menu_aa -> Toast.makeText(this, "aa", Toast.LENGTH_SHORT).show()
-            R.id.menu_bb -> Toast.makeText(this, "bb", Toast.LENGTH_SHORT).show()
+            R.id.menu_aa -> startActivity(Intent(this,HelpActivity::class.java))
+            R.id.menu_bb -> startActivity(Intent(this,PrivactyActivity::class.java))
         }
         return super.onOptionsItemSelected(item)
     }

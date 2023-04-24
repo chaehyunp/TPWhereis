@@ -141,16 +141,20 @@ class LoginActivity : AppCompatActivity() {
     private fun clickLoginNaver() {
 
         //네아로 초기화
-        NaverIdLoginSDK.initialize(this, "jED5Rib2y7SfcmhebtRP", "PtkMdTVIa_", "웨어리즈")
+        NaverIdLoginSDK.initialize(this, "jED5Rib2y7SfcmhebtRP", "b06pbhrUrt", "WhereIs")
+        val error = NaverIdLoginSDK.getLastErrorDescription()
+        Log.i("what_error", "$error")
 
         //네이버 로그인
         NaverIdLoginSDK.authenticate(this, object : OAuthLoginCallback{
             override fun onError(errorCode: Int, message: String) {
+                Log.i("what_er", "$message")
                 Toast.makeText(this@LoginActivity, "error : $message", Toast.LENGTH_SHORT).show()
             }
 
             override fun onFailure(httpStatus: Int, message: String) {
-                Toast.makeText(this@LoginActivity, "fail : $message", Toast.LENGTH_SHORT).show()
+                Log.i("what_fa", "$message")
+                Toast.makeText(this@LoginActivity, "네이버 로그인 실패 : $message", Toast.LENGTH_SHORT).show()
             }
 
             override fun onSuccess() {
@@ -162,20 +166,20 @@ class LoginActivity : AppCompatActivity() {
                 Log.i("token", accessToken!!)
 
                 //레트로핏으로 사용자정보 API 가져오기
-                val retrofit = RetrofitHelper.getRetrofitInstance("https://openapi.naver.com")
-                retrofit.create(RetrofitApiService::class.java).getNaverUserInfo("Bearer $accessToken").enqueue(object  : Callback<NidUserInfoResponse> {
+                val retrofit= RetrofitHelper.getRetrofitInstance("https://openapi.naver.com")
+                retrofit.create(RetrofitApiService::class.java).getNidUserInfo("Bearer $accessToken").enqueue(object : Callback<NidUserInfoResponse>{
                     override fun onResponse(
                         call: Call<NidUserInfoResponse>,
                         response: Response<NidUserInfoResponse>
                     ) {
-                        val userInfoResponse:NidUserInfoResponse? = response.body()
-                        val id:String = userInfoResponse?.response?.id?:"" //엘비스 연산자 : 앞이 null값이면 뒤값을 기본으로
-                        val email:String = userInfoResponse?.response?.email?:""
+                        val userInfoResponse: NidUserInfoResponse?= response.body()
+                        val id:String= userInfoResponse?.response?.id ?: ""
+                        val email:String= userInfoResponse?.response?.email ?: ""
 
                         Toast.makeText(this@LoginActivity, "$email", Toast.LENGTH_SHORT).show()
-                        GlobalVari.userAccount = UserAccount(id, email)
+                        GlobalVari.userAccount= UserAccount(id, email)
 
-                        //메인화면으로 이동
+                        // main 화면으로 이동
                         startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                         finish()
                     }
@@ -183,7 +187,6 @@ class LoginActivity : AppCompatActivity() {
                     override fun onFailure(call: Call<NidUserInfoResponse>, t: Throwable) {
                         Toast.makeText(this@LoginActivity, "회원정보 불러오기 실패 : ${t.message}", Toast.LENGTH_SHORT).show()
                     }
-
                 })
 
             }
