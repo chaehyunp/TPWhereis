@@ -12,7 +12,7 @@
         android:layout_height="?attr/actionBarSize">
 
         <ImageView
-            android:id="@+id/iv_mulocation"
+            android:id="@+id/iv_mylocation"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:src="@drawable/baseline_my_location_24"
@@ -32,6 +32,45 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+    <HorizontalScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:scrollbars="none">
+
+        <!--  다른 문서를 가져올 수 있음 -->
+        <include layout="@layout/list_choice" android:id="@+id/layout_choice"/>
+
+    </HorizontalScrollView>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/scrollview"
+        app:tabIndicatorColor="#FFC81F"
+        app:tabSelectedTextColor="#FFFFC81F"
+        app:tabTextColor="#ffaaaaaa">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LIST"/>
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MAP"/>
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <FrameLayout
+        android:id="@+id/container_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tab_layout"
+        android:layout_marginTop="8dp"/>
 
 
 </RelativeLayout>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/menu_aa" android:title="aa"/>
-    <item android:id="@+id/menu_bb" android:title="bb"/>
+    <item android:id="@+id/menu_aa" android:title="사용방법"/>
+    <item android:id="@+id/menu_bb" android:title="개인정보처리방침"/>
 
 </menu>
