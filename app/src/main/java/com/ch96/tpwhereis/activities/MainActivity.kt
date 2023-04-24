@@ -36,7 +36,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.create
 
 class MainActivity : AppCompatActivity() {
 
@@ -246,7 +245,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.menu_aa -> startActivity(Intent(this,HelpActivity::class.java))
-            R.id.menu_bb -> startActivity(Intent(this,PrivactyActivity::class.java))
+            R.id.menu_bb -> startActivity(Intent(this,PrivacyActivity::class.java))
         }
         return super.onOptionsItemSelected(item)
     }
